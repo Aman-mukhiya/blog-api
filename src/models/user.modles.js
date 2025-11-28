@@ -19,6 +19,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
+      enum: ["public", "admin"], // only allow these values
+      default: "public", 
       required: true,
     },
   },

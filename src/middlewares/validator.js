@@ -27,8 +27,9 @@ const registerValidtaion = [
   body("role")
     .notEmpty()
     .withMessage("role cannot be empty")
-    .isIn(["user", "admin"])
+    .isIn(["public", "admin"])
     .withMessage("Invalid role!"),
+    
 ];
 
 export default registerValidtaion;

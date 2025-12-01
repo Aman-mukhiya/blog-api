@@ -1,6 +1,6 @@
-import { body } from "express-validator";
+import { body, query } from "express-validator";
 
-const registerValidtaion = [
+export const registerValidtaion = [
   body("name")
     .notEmpty()
     .withMessage("Name is empty!")
@@ -28,8 +28,18 @@ const registerValidtaion = [
     .notEmpty()
     .withMessage("role cannot be empty")
     .isIn(["public", "admin"])
-    .withMessage("Invalid role!"),
-    
+    .withMessage("Invalid role!")
 ];
 
-export default registerValidtaion;
+export const queryValidation = [
+  query("limit")
+    .notEmpty()
+    .withMessage("Limit cannot be empty!")
+    .isInt({ min: 1 })
+    .withMessage("Limit must be a number minimum of 1"),
+  query("page")
+    .notEmpty()
+    .withMessage("Page cannot be empty")
+    .isInt({ min: 1 })
+    .withMessage("Page must be a number minimum of 1")
+];

@@ -1,13 +1,15 @@
 import express from "express";
-import { registerUser } from "../controllers/user.controller.js";
-import validtaion from "../middlewares/validator.js"
-import { loginUser } from "../controllers/user.controller.js";
+import { registerUser, loginUser, getOwnProfile, viewUsers } from "../controllers/user.controller.js";
+import {validtaion, queryValidation} from "../middlewares/validator.js"
+import { verifyJWT } from "../middlewares/auth.js";
+
 
 const router = express.Router();
 
 router.post("/auth/register",validtaion, registerUser);
 router.post("/auth/login",validtaion,  loginUser);
-// router.get("/users", viewUsers);// only for admin
+router.get("/users/me",verifyJWT, getOwnProfile);
+router.get("/users",verifyJWT, queryValidation, viewUsers);// only for admin
 
 export default router;
 

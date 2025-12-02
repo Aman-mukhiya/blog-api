@@ -1,13 +1,13 @@
 import express from "express";
-import postValidator from "../middlewares/postValidator";
+import { createPostValidation, updatePostValidation } from "../middlewares/postValidator.js";
+import { getAllPost, createPost, updatePost, deletePost } from "../controllers/post.controller.js"
+import { verifyJWT } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.get("/posts", getPost);
-router.post("/posts",postValidator, createPost);
-router.put("/posts/:id", updatePost);
+router.get("/posts", getAllPost);
+router.post("/posts", verifyJWT, createPostValidation, createPost);
+router.put("/posts/:id", verifyJWT, updatePostValidation, updatePost);
 router.delete("/posts/:id", deletePost);
-
-
 
 export default router;

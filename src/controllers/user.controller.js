@@ -140,7 +140,7 @@ export const viewUsers = asyncHandler(async (req, res) => {
     return res.status(402).json({ message: "Unauthorized admin access" });
   }
 
-  const users = await User.find()
+  const users = await User.find().select("-password -refreshToken")
     .skip(limit * (page - 1))
     .limit(limit)
     .sort({ createdAt: -1 });

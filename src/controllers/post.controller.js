@@ -41,11 +41,18 @@ export const updatePost = asyncHandler(async (req, res) => {
   }
   const { id = "" } = req.query;
 
+  const postToUpdate = await Post.findById(id);
+
+  if ( (postToUpdate.author.toString() !== req.user._id.toString() ) && (req.user.role !== "admin") ) {
+    return res
+      .status(403)
+      .json({ message: "Unauthorized to update this post" });
+  }
+
   const post = {
     title: req.body.title,
     content: req.body.content,
     tags: req.body.tags,
-    author: req.user._id,
   };
 
   if (!id) {
@@ -72,5 +79,27 @@ export const updatePost = asyncHandler(async (req, res) => {
 
   return res.status(200).json({ message: "Post Updated successfully", post });
 });
-export const deletePost = asyncHandler(async (req, res) => {});
+export const deletePost = asyncHandler(async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+  const { id = "" } = req.query;
+
+  const postToDelete = await Post.findById(id);
+
+  if ( (postToDelete.author.toString() !== req.user._id.toString() ) && (req.user.role !== "admin") ) {
+    return res
+      .status(403)
+      .json({ message: "Unauthorized to delete this post" });
+  }
+
+    const deletPost = await Post.findByIdAndDelete(id);
+
+    if(!deletPost){
+        return res.status(500).json({message: "Unable to delete this post"});
+    }
+
+    return res.status(200).json({message: "Post deleted successfully!!!"});
+});
 // export const getMyPost = asyncHandler(async (req, res) => {});

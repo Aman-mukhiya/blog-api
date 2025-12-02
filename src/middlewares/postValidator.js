@@ -36,6 +36,7 @@ export const createPostValidation = [
     .escape(),
 ];
 
+// here query("id") seems to chatch a req which doesn't have particularly written ?id="dsfd" rather than ../dsfd
 export const updatePostValidation = [
   query("id").notEmpty().escape(),
   body("title")
@@ -78,4 +79,8 @@ export const updatePostValidation = [
     .withMessage("Each tag must be at most 50 characters")
     .trim()
     .escape(),
+];
+
+export const deletePostValidation = [
+   query("id").notEmpty().escape()
 ];

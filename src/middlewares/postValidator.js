@@ -1,4 +1,4 @@
-import { body, query  } from "express-validator";
+import { body, query } from "express-validator";
 
 export const createPostValidation = [
   body("title")
@@ -66,10 +66,7 @@ export const updatePostValidation = [
   //     });
   //   }),
 
-  body("tags")
-    .optional()
-    .isArray()
-    .withMessage("Tags must be an array"),
+  body("tags").optional().isArray().withMessage("Tags must be an array"),
 
   body("tags.*")
     .optional()
@@ -81,6 +78,21 @@ export const updatePostValidation = [
     .escape(),
 ];
 
-export const deletePostValidation = [
-   query("id").notEmpty().escape()
+export const deletePostValidation = [query("id").notEmpty().escape()];
+
+export const getPostValidation = [
+  query("search")
+    .optional()
+    .trim()
+    .matches(/^[\w\s.,-]*$/) // letters, numbers, underscore, space, comma, dot, dash
+    .withMessage("Search query contains invalid characters")
+    .isLength({ max: 100 }),
+  query("page").isInt().withMessage("page must be a number"),
+  query("limit").isInt().withMessage("limit must be a number"),
+  query("sortType")
+    .optional()
+    .isIn(["asc", "desc"])
+    .withMessage("sortType must be 'asc' or 'desc'."),
 ];
+
+
